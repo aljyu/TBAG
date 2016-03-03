@@ -2,7 +2,19 @@ module Main where
 import Player
 
 status :: Player -> IO()
-status (Player {hp = h, potions = p}) = print ("Player has " ++ (show h) ++ " HP and " ++ (show p) ++ " potions")
+status (Player {hp = h, potions = p}) = do      
+                                            let character = Player h p
+                                            if p==0 then putStrLn ("Player has " ++ (show h) ++ " HP and " ++ (show p) ++ " potions")
+                                            else do putStrLn "Would you like to drink a potion? YES or NO?"
+                                                    input <- getLine
+                                                    if input == "STATUS" then status character
+                                                    else if input == "YES" then do let newPlayer = drink character
+                                                                                   status newPlayer
+                                                    else if input == "NO" then putStrLn ""
+                                                    else putStrLn "Command not recognized. Please try again."
+                                                    status character
+
+ 
 
 -- "global" variable
 player :: Player
@@ -33,7 +45,7 @@ main = do
                 doChoice1 player
 
 doChoice1 character = do
-                                        putStrLn "\n\"Alright\" you think to yourself \"Where should I check out first? Should I check out the KITCHEN, check out the HOUSE, or check out the BACKYARD?\""
+                                        putStrLn "\n\"Alright\" you think to yourself \"Where should I check out first? Should I check out the KITCHEN, check out the DOG HOUSE, or check out the BACKYARD?\""
                                         input <- getLine
                                         if input == "STATUS" then status character
                                         else if input == "KITCHEN" then goToKitchen character
@@ -71,14 +83,32 @@ goToDogHouse character = do
                                                 putStrLn "\"Should I take the ITEM, check out the KITCHEN, or check out the BACKYARD?\" you wonder to yourself as you absent-mindedly pet Blue on the head."
                                                 input <- getLine
                                                 if input == "STATUS" then status newPlayer
-                                                --else if input == "ITEM" then takeItem True newPlayer
+                                                else if input == "ITEM" then takeItem True newPlayer
                                                 else if input == "KITCHEN" then goToKitchen newPlayer
                                                 else if input == "BACKYARD" then goToBackyard newPlayer
                                                 else putStrLn "Command not recognized. Please try again."
                                                 goToDogHouse character
 
 -- Doesn't work yet
---takeItem b character = if (b == True) then return (extra character) else return (character)
+--takeItem :: Bool -> Player -> IO()
+takeItem b character = do
+                                        let newPlayerExtra = extra character
+                                        let newPlayer = move character
+                                        if (b == True) then do putStrLn "You remove the item from Blue's mouth.\nYOU HAVE OBTAINED A POTION!\n"
+                                                               leaveDogHouse newPlayerExtra    
+                                        else do putStrLn "You remove the item from Blue's mouth only to find out that it is an old tennis ball.\n"
+                                                leaveDogHouse newPlayer
+
+
+leaveDogHouse character = do
+                                                let newPlayer = move character
+                                                putStrLn "Do you want to check out the KITCHEN or check out the BACKYARD?"
+                                                input <- getLine
+                                                if input == "STATUS" then status newPlayer
+                                                else if input == "KITCHEN" then goToKitchen newPlayer
+                                                else if input == "BACKYARD" then goToBackyard newPlayer
+                                                else putStrLn "Command not recognized. Please try again."
+                                                leaveDogHouse character
 
 goToBackyard character = do
                                                 let newPlayer = move character
@@ -96,3 +126,8 @@ goToBackyard character = do
                                                 goToBackyard character
       
 goToLevel2 character = putStrLn "\nYou walk outside to the backyard where you are immediately caught in a tractor beam."
+
+
+
+
+
