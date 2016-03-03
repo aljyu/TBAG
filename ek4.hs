@@ -1,5 +1,5 @@
 module Main where
-import Player
+import Ek4Player
 
 -- fuction for printing out status
 status :: Player -> IO() 
