@@ -2,22 +2,25 @@ module Main where
 import Player
 
 status :: Player -> IO()
-status (Player {hp = h, potions = p}) = --do      
---                                                                let character = Player h p
-                                                                putStrLn ("Player has " ++ (show h) ++ " HP and " ++ (show p) ++ " potions")
---                                                                if p > 0 then do
---                                                                                        putStrLn "Would you like to drink a potion? YES or NO?"
---                                                                                        input <- getLine
---                                                                                        if input == "YES" then do
---                                                                                                                                let character = drink character
---                                                                                                                                limitHP h
---                                                                                        if input == "NO" then ""
---                                                                                        else putStrLn "Command not recognized. Please try again."
-
---limitHP :: Int -> Int
---limitHP num
---    | num > 100   =   100
---    | otherwise     =   num
+status (Player {hp = h, potions = p}) = do      
+                                                                let character = Player h p
+                                                                if p > 0 then do
+                                                                                        putStrLn ("Player has " ++ (show h) ++ " HP and " ++ (show p) ++ " potions")
+                                                                                        putStrLn "Would you like to drink a potion? YES or NO?"
+                                                                                        input <- getLine
+                                                                                        if input == "YES" then do
+                                                                                                                                status (drink character)
+--                                                                                                                                limitHP (drink character)
+                                                                                        else if input == "NO" then putStrLn ""
+                                                                                        else putStrLn "Command not recognized. Please try again."
+                                                                else putStrLn ("Player has " ++ (show h) ++ " HP and " ++ (show p) ++ " potions")
+-- Not working yet. Almost there.
+{-
+limitHP :: Player -> IO()
+limitHP (Player {hp = h, potions = p})
+    | h > 100       = h = 100
+    | otherwise    = h
+-}
 
 -- "global" variable
 player :: Player
