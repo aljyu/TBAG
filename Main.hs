@@ -8,19 +8,10 @@ status (Player {hp = h, potions = p}) = do
                                                                                         putStrLn ("Player has " ++ (show h) ++ " HP and " ++ (show p) ++ " potions")
                                                                                         putStrLn "Would you like to drink a potion? YES or NO?"
                                                                                         input <- getLine
-                                                                                        if input == "YES" then do
-                                                                                                                                status (drink character)
---                                                                                                                                limitHP (drink character)
+                                                                                        if input == "YES" then status (drink character)
                                                                                         else if input == "NO" then putStrLn ""
                                                                                         else putStrLn "Command not recognized. Please try again."
                                                                 else putStrLn ("Player has " ++ (show h) ++ " HP and " ++ (show p) ++ " potions")
--- Not working yet. Almost there.
-{-
-limitHP :: Player -> IO()
-limitHP (Player {hp = h, potions = p})
-    | h > 100       = h = 100
-    | otherwise    = h
--}
 
 -- "global" variable
 player :: Player
