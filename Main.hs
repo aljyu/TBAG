@@ -76,7 +76,7 @@ takeItem str character
                                         goToDogHouse str character
     | otherwise         =   do
                                         putStrLn "Command not recognized. Please try again."
-                                        takeItem str character
+                                        goToDogHouse str character
 
 goToKitchen str character = do
                                                 let newPlayer = move character
